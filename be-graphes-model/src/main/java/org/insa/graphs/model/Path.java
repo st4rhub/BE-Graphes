@@ -198,7 +198,6 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
         boolean bool = false;
@@ -206,12 +205,19 @@ public class Path {
             bool = true;
         }
         else{
-            if (size() == 1){
+            if ((size() == 1)||(size() == 2)){
                 bool = true;
             }
-            // A FAIRE : the first arc has for origin the origin of the path and, for two
-            /* consecutive arcs, the destination of the first one is the origin of the
-            * second one */
+            if (size() > 2){
+                bool = true;
+                if (arcs.get(0).getOrigin() == getOrigin()){
+                    for (int i = 0; i<2; i++){
+                        if (!(arcs.get(i).getDestination() == arcs.get(i+1).getOrigin())){
+                            bool = false;
+                        }
+                    }
+                }
+            }
         }
         return bool;
     }
