@@ -214,7 +214,7 @@ public class Path {
      */
     public float getLength() {
         // TODO:
-        return 0;
+        return paths.length;
     }
 
     /**
