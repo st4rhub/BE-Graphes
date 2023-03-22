@@ -252,7 +252,7 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
+        double min = getTravelTime().min(); /* non lol c'est certainement pas ça */
         return 0;
     }
 
