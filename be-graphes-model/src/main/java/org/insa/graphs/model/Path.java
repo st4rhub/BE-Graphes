@@ -198,22 +198,10 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        boolean bool = false;
-        if (this.isEmpty()){
-            bool = true;
-        }
-        else{
-            if (size() == 1){
-                bool = true;
-            }
-            // A FAIRE : the first arc has for origin the origin of the path and, for two
-            /* consecutive arcs, the destination of the first one is the origin of the
-            * second one */
-        }
-        return bool;
+        // TODO:
+        return false;
     }
 
     /**
