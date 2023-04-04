@@ -201,8 +201,19 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean bool = false;
+        if (this.isEmpty()){
+            bool = true;
+        }
+        else{
+            if (size() == 1){
+                bool = true;
+            }
+            // A FAIRE : the first arc has for origin the origin of the path and, for two
+            /* consecutive arcs, the destination of the first one is the origin of the
+            * second one */
+        }
+        return bool;
     }
 
     /**
@@ -210,11 +221,10 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
         float longueur = 0;
-        for (List<Arc> arc: arcs) {
+        for (Arc arc: arcs) {
             longueur += arc.getLength();
         }
         return longueur;
