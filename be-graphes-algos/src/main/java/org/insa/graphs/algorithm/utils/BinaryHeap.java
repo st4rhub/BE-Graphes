@@ -46,8 +46,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     private void arraySet(int index, E value) {
         if (index == this.array.size()) {
             this.array.add(value);
-        }
-        else {
+        } else {
             this.array.set(index, value);
         }
     }
@@ -106,8 +105,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
                     this.arraySet(ileft, current);
                     this.percolateDown(ileft);
                 }
-            }
-            else {
+            } else {
                 // Right is smaller
                 if (right.compareTo(current) < 0) {
                     this.arraySet(index, right);
@@ -137,7 +135,25 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 
     @Override
     public void remove(E x) throws ElementNotFoundException {
-        // TODO:
+        boolean appartenance = false;
+        for (int i = 0; i < this.currentSize; i++) {
+            if (this.array.get(i) == x) {
+                appartenance = true;
+            }
+        }
+        if (!appartenance) {
+            throw new ElementNotFoundException(x);
+        }
+        int index_x = array.indexOf(x);
+        E lastItem_x;
+        int index_feuille_x = indexLeft(index_x) + 1;
+        while (index_feuille_x < --this.currentSize) {
+            index_feuille_x = indexLeft(index_feuille_x) + 1;
+        }
+        index_feuille_x = indexParent(index_feuille_x);
+        lastItem_x = array.get(index_feuille_x);
+        this.arraySet(index_x, lastItem_x);
+        this.percolateDown(index_x);
     }
 
     @Override
