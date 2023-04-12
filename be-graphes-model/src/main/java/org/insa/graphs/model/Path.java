@@ -36,8 +36,9 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        for (int i = 0; i < node.size(); ++i) {
+
+        }
     }
 
     /**
@@ -67,19 +68,27 @@ public class Path {
             List<Arc> successeurs = nodes.get(i).getSuccessors();
             for (int j = 0; j < successeurs.size(); ++j) {
                 if (successeurs.get(j).getDestination() == nodes.get(i + 1)) {
+                    arcs.add(successeurs.get(j));
                     compteur_succ = 1;
-                    if (successeurs.get(j).getLength() <= dist_min) {
-                        dist_min = successeurs.get(j).getLength();
-                        index_min = j;
-                    }
                 }
                 if (compteur_succ == 0) {
                     throw new IllegalArgumentException();
+                } else {
+
+                    /*
+                     * if (arcs.get(0).getOrigin() == getOrigin()) {
+                     * for (int i = 0; i < 2; i++) {
+                     * if (!(arcs.get(i).getDestination() == arcs.get(i + 1).getOrigin())) {
+                     * bool = false;
+                     * }
+                     * }
+                     * }
+                     */
                 }
+                arcs.add(successeurs.get(index_min));
             }
-            arcs.add(successeurs.get(index_min));
+            return new Path(graph, arcs);
         }
-        return new Path(graph, arcs);
     }
 
     /**
@@ -279,10 +288,12 @@ public class Path {
      * 
      */
     public double getMinimumTravelTime() {
-        double minTravelTime = 0;
-        for (int i = 0; i < this.getArcs().size(); i++) {
-            minTravelTime += arcs.get(i).getMinimumTravelTime();
+        double maxSpeed = 0.0;
+        double minTravelTime = 0.0;
+        for (int i = 0; i < this.getLength(); i++) {
+            maxSpeed = arcs.get(i).getRoadInformation().getMaximumSpeed();
+            minTravelTime += arcs.get(i).getLength() / maxSpeed;
         }
-        return minTravelTime;
+        return minTravelTime * (3600.0 / 1000.0);
     }
 }
