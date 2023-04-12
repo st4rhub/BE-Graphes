@@ -39,6 +39,7 @@ public class Path {
         for (int i = 0; i < nodes.size(); ++i) {
 
         }
+        return new Path(graph, arcs);
     }
 
     /**
