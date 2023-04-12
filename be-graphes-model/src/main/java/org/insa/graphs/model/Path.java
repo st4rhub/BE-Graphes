@@ -31,7 +31,6 @@ public class Path {
      *                                  consecutive nodes in the list are not
      *                                  connected in the graph.
      * 
-     * @deprecated Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
@@ -72,8 +71,7 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         if (nodes.size() == 1) {
-
-            return new Path(graph, arcs);
+            return new Path(graph, nodes.get(0));
         }
         for (int i = 0; i < nodes.size() - 1; ++i) {
             int compteur_succ = 0; /* compteur pour l'exception */
