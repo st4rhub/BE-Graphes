@@ -58,7 +58,7 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         if (nodes.size() == 1) {
-            // a faire plus tard je ff :(
+            // a faire
         }
         for (int i = 0; i < nodes.size() - 1; ++i) {
             int compteur_succ = 0; /* compteur pour l'exception */
