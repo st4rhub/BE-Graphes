@@ -36,14 +36,14 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        for (int i = 0; i < nodes.size(); ++i){
+        for (int i = 0; i < nodes.size(); ++i) {
             int compteur_succ = 0;
             float vitesse_max = 0;
             int index_min = 0;
             List<Arc> successeurs = nodes.get(i).getSuccessors();
             for (int j = 0; j < successeurs.size(); ++j) {
                 if (successeurs.get(j).getDestination() == nodes.get(i + 1)) {
-                    arcs.add(successeurs.get(j));
+
                     compteur_succ = 1;
                 }
                 if (compteur_succ == 0) {
@@ -51,6 +51,7 @@ public class Path {
                 }
             }
         }
+        return new Path(graph, arcs);
     }
 
     /**
@@ -71,7 +72,8 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         if (nodes.size() == 1) {
-            // a faire
+
+            return new Path(graph, arcs);
         }
         for (int i = 0; i < nodes.size() - 1; ++i) {
             int compteur_succ = 0; /* compteur pour l'exception */
@@ -79,28 +81,19 @@ public class Path {
             int index_min = 0;
             List<Arc> successeurs = nodes.get(i).getSuccessors();
             for (int j = 0; j < successeurs.size(); ++j) {
-                if (successeurs.get(j).getDestination() == nodes.get(i + 1)) {
-                    arcs.add(successeurs.get(j));
+                if (successeurs.get(j).getDestination() == nodes.get(i + 1)
+                        && successeurs.get(j).getLength() < dist_min) {
+                    index_min = j;
+                    dist_min = successeurs.get(j).getLength();
                     compteur_succ = 1;
                 }
                 if (compteur_succ == 0) {
                     throw new IllegalArgumentException();
-                } else {
-
-                    /*
-                     * if (arcs.get(0).getOrigin() == getOrigin()) {
-                     * for (int i = 0; i < 2; i++) {
-                     * if (!(arcs.get(i).getDestination() == arcs.get(i + 1).getOrigin())) {
-                     * bool = false;
-                     * }
-                     * }
-                     * }
-                     */
                 }
-                arcs.add(successeurs.get(index_min));
             }
-            return new Path(graph, arcs);
+            arcs.add(successeurs.get(index_min));
         }
+        return new Path(graph, arcs);
     }
 
     /**
@@ -300,12 +293,10 @@ public class Path {
      * 
      */
     public double getMinimumTravelTime() {
-        double maxSpeed = 0.0;
         double minTravelTime = 0.0;
-        for (int i = 0; i < this.getLength(); i++) {
-            maxSpeed = arcs.get(i).getRoadInformation().getMaximumSpeed();
-            minTravelTime += arcs.get(i).getLength() / maxSpeed;
+        for (int i = 0; i < this.size() - 1; i++) {
+            minTravelTime += arcs.get(i).getMinimumTravelTime();
         }
-        return minTravelTime * (3600.0 / 1000.0);
+        return minTravelTime;
     }
 }
