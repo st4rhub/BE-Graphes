@@ -79,6 +79,11 @@ public class Path {
                     }
                 } */
             }
+<<<<<<< HEAD
+=======
+            arcs.add(successeurs.get(index_min));
+        }
+>>>>>>> c2ba683b218fd3b512e92c30e6a2be3d4d3fec5d
         return new Path(graph, arcs);
         }
     }
