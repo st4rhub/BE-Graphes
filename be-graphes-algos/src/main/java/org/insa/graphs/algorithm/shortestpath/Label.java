@@ -11,17 +11,34 @@ import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
 
 public class Label {
-    
-    public Node SommetCourant;
-    public Boolean Marque;
-    public int CoutRealise;
-    public Node Pere;
 
-    public Label (Node SommetCourant, Boolean Marque, int CoutRealise, Node Pere){
+    private Node SommetCourant;
+    private Boolean Marque;
+    private int CoutRealise;
+    private Node Pere;
+
+    public Label(Node SommetCourant, Boolean Marque, int CoutRealise, Node Pere) {
         this.SommetCourant = SommetCourant;
         this.Marque = Marque;
         this.CoutRealise = CoutRealise;
         this.Pere = Pere;
+    }
+
+    public Node getSommetCourant() {
+        return this.SommetCourant;
+    }
+
+    public Boolean isMarque() {
+        return this.Marque;
+    }
+
+    public Node getPere() {
+        return this.Pere;
+    }
+
+    public int getCost() {
+        int cout = this.CoutRealise;
+        return cout;
     }
 
 }
