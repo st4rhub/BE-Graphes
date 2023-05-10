@@ -14,10 +14,10 @@ public class Label {
 
     private Node SommetCourant;
     private Boolean Marque;
-    private int CoutRealise;
+    private float CoutRealise;
     private Arc Pere;
 
-    public Label(Node SommetCourant, Boolean Marque, int CoutRealise, Arc Pere) {
+    public Label(Node SommetCourant, Boolean Marque, float CoutRealise, Arc Pere) {
         this.SommetCourant = SommetCourant;
         this.Marque = Marque;
         this.CoutRealise = CoutRealise;
@@ -36,9 +36,21 @@ public class Label {
         return this.Pere;
     }
 
-    public int getCost() {
-        int cout = this.CoutRealise;
+    public float getCost() {
+        float cout = this.CoutRealise;
         return cout;
+    }
+
+    public void setMark(Boolean mark) {
+        this.Marque = mark;
+    }
+
+    public void setCost(float cost) {
+        this.CoutRealise = cost;
+    }
+
+    public void setPere(Arc pere) {
+        this.Pere = pere;
     }
 
 }
