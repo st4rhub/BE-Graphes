@@ -15,9 +15,9 @@ public class Label {
     private Node SommetCourant;
     private Boolean Marque;
     private int CoutRealise;
-    private Node Pere;
+    private Arc Pere;
 
-    public Label(Node SommetCourant, Boolean Marque, int CoutRealise, Node Pere) {
+    public Label(Node SommetCourant, Boolean Marque, int CoutRealise, Arc Pere) {
         this.SommetCourant = SommetCourant;
         this.Marque = Marque;
         this.CoutRealise = CoutRealise;
@@ -32,7 +32,7 @@ public class Label {
         return this.Marque;
     }
 
-    public Node getPere() {
+    public Arc getPere() {
         return this.Pere;
     }
 
