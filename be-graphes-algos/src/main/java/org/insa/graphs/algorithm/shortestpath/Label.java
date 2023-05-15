@@ -35,7 +35,7 @@ public class Label {
     public Arc getPere() {
         return this.Pere;
     }
-
+ 
     public float getCost() {
         float cout = this.CoutRealise;
         return cout;
@@ -51,6 +51,10 @@ public class Label {
 
     public void setPere(Arc pere) {
         this.Pere = pere;
+    }
+
+    public void getTotalCost(){
+        //what is it??
     }
 
 }
