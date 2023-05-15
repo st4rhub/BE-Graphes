@@ -37,32 +37,50 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         // Itération
         Node lastnode = labels[0].getSommetCourant();
-        while (!(tas.isEmpty()) && lastnode == data.getDestination()) { // tant qu'l existe des sommets non marqués
+
+        while (!(tas.isEmpty()) && lastnode != data.getDestination()) { // tant qu'l existe des sommets non marqués
             Node x = tas.deleteMin();
             Label label_x = labels[x.getId()];
             label_x.setMark(true);
             lastnode = x;
             List<Arc> successeurs_x = x.getSuccessors();
-            for (int j = 0; j < successeurs_x.size(); ++j) {
+            for (int j = 0; j < successeurs_x.size(); j++) {
                 Arc x_y = successeurs_x.get(j);
                 Node y = x_y.getDestination();
                 int id_y = y.getId();
                 Label label_y = labels[id_y];
-                if (!label_y.isMarque()) { // si y n'est pas marqué
+                if (!(label_y.isMarque())) { // si y n'est pas marqué
                     if (label_y.getCost() > label_x.getCost() + x_y.getLength()) {
-                        label_y.setCost(label_x.getCost() + x_y.getLength());
-
+                        label_y.setPere(x_y);
                         if (label_y.getCost() != Integer.MAX_VALUE) {
                             tas.remove(y);
-                            label_y.setPere(x_y);
-                        } else {
+                            label_y.setCost(label_x.getCost() + x_y.getLength());
                             tas.insert(y);
+                        } else {
+                            label_y.setCost(label_x.getCost() + x_y.getLength());
+                            tas.insert(y);
+
                         }
                     }
                 }
             }
         }
-        // remonter le pere du pere du pere.... bref t'as capté le sang
+
+        // if pas de chemin a rajouter
+        Label label_final = labels[lastnode.getId()];
+        ArrayList<Arc> arcs_finaux = new ArrayList<Arc>();
+
+        while (label_final.getPere().getOrigin() != data.getOrigin()) {
+            arcs_finaux.add(label_final.getPere());
+            label_final = labels[label_final.getPere().getOrigin().getId()];
+        }
+        arcs_finaux.add(label_final.getPere());
+
+        Collections.reverse(arcs_finaux);
+        Path path = new Path(graph, arcs_finaux);
+
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, path);
+
         return solution;
     }
 }
