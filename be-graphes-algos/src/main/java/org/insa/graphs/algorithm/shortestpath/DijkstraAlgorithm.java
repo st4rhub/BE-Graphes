@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.insa.graphs.algorithm.AbstractInputData.Mode;
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.model.Arc;
@@ -14,52 +15,66 @@ import org.insa.graphs.model.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+    public Label newLabel(Node node, Boolean bool, double value, Arc father) {
+        return new Label(node, bool, value, father);
+    }
+
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
+    }
+
+    public double getCostArc(Arc arc, Mode mode) {
+        if (mode == Mode.TIME) {
+            return arc.getMinimumTravelTime();
+        } else {
+            return (double) arc.getLength();
+        }
     }
 
     @Override
     protected ShortestPathSolution doRun() {
         final ShortestPathData data = getInputData();
+        Mode mode = data.getMode();
         ShortestPathSolution solution = null;
         // Initialisation
         Graph graph = data.getGraph();
         Label[] labels = new Label[graph.size()];
         for (int id = 0; id < graph.size(); id++) {
             Node node_i = graph.get(id);
-            labels[id] = new Label(node_i, false, Integer.MAX_VALUE, null);
+            labels[id] = newLabel(node_i, false, Integer.MAX_VALUE, null);
         }
         Node s = data.getOrigin();
-        Label label_s = labels[s.getId()];
-        label_s.setCost(0);
-        BinaryHeap<Node> tas = new BinaryHeap<Node>();
-        tas.insert(s);
+        labels[s.getId()].setCost(0);
+        BinaryHeap<Label> tas = new BinaryHeap<Label>();
+        tas.insert(labels[s.getId()]);
+        notifyOriginProcessed(s);
 
         // Itération
-        Node lastnode = labels[0].getSommetCourant();
+        Node lastnode = labels[data.getOrigin().getId()].getSommetCourant();
 
         while (!(tas.isEmpty()) && lastnode != data.getDestination()) { // tant qu'l existe des sommets non marqués
-            Node x = tas.deleteMin();
-            Label label_x = labels[x.getId()];
-            label_x.setMark(true);
+            Label label_min = tas.deleteMin();
+            Node x = label_min.getSommetCourant();
+            labels[x.getId()].setMark(true);
+            notifyNodeMarked(x);
             lastnode = x;
             List<Arc> successeurs_x = x.getSuccessors();
             for (int j = 0; j < successeurs_x.size(); j++) {
                 Arc x_y = successeurs_x.get(j);
                 Node y = x_y.getDestination();
                 int id_y = y.getId();
-                Label label_y = labels[id_y];
-                if (!(label_y.isMarque())) { // si y n'est pas marqué
-                    if (label_y.getCost() > label_x.getCost() + x_y.getLength()) {
-                        label_y.setPere(x_y);
-                        if (label_y.getCost() != Integer.MAX_VALUE) {
-                            tas.remove(y);
-                            label_y.setCost(label_x.getCost() + x_y.getLength());
-                            tas.insert(y);
+                if (!(labels[id_y].isMarque())) { // si y n'est pas marqué
+                    notifyNodeReached(y);
+                    double cost_x_y = getCostArc(x_y, mode);
+                    if (labels[id_y].getCost() > labels[x.getId()].getCost() + cost_x_y) {
+                        labels[id_y].setPere(x_y);
+                        if (labels[id_y].getCost() != Integer.MAX_VALUE) {
+                            tas.remove(labels[id_y]);
+                            labels[id_y].setCost(labels[x.getId()].getCost() + cost_x_y);
+                            tas.insert(labels[id_y]);
                         } else {
-                            label_y.setCost(label_x.getCost() + x_y.getLength());
-                            tas.insert(y);
-
+                            labels[id_y].setCost(labels[x.getId()].getCost() + cost_x_y);
+                            tas.insert(labels[id_y]);
                         }
                     }
                 }
@@ -67,6 +82,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
 
         // if pas de chemin a rajouter
+        if (lastnode != data.getDestination()) {
+            solution = new ShortestPathSolution(data, Status.INFEASIBLE);
+            return solution;
+        }
+        notifyDestinationReached(lastnode);
         Label label_final = labels[lastnode.getId()];
         ArrayList<Arc> arcs_finaux = new ArrayList<Arc>();
 

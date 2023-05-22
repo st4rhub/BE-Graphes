@@ -10,14 +10,14 @@ import org.insa.graphs.model.Graph;
 import org.insa.graphs.model.Node;
 import org.insa.graphs.model.Path;
 
-public class Label {
+public class Label implements Comparable<Label> {
 
     private Node SommetCourant;
     private Boolean Marque;
-    private float CoutRealise;
+    private double CoutRealise;
     private Arc Pere;
 
-    public Label(Node SommetCourant, Boolean Marque, float CoutRealise, Arc Pere) {
+    public Label(Node SommetCourant, Boolean Marque, double CoutRealise, Arc Pere) {
         this.SommetCourant = SommetCourant;
         this.Marque = Marque;
         this.CoutRealise = CoutRealise;
@@ -35,26 +35,30 @@ public class Label {
     public Arc getPere() {
         return this.Pere;
     }
- 
-    public float getCost() {
-        float cout = this.CoutRealise;
-        return cout;
+
+    public double getCost() {
+        return this.CoutRealise;
     }
 
     public void setMark(Boolean mark) {
         this.Marque = mark;
     }
 
-    public void setCost(float cost) {
-        this.CoutRealise = cost;
+    public void setCost(double d) {
+        this.CoutRealise = d;
     }
 
     public void setPere(Arc pere) {
         this.Pere = pere;
     }
 
-    public void getTotalCost(){
-        //what is it??
+    public int compareTo(Label x) {
+        return Double.compare(getTotalCost(), x.getTotalCost());
+
+    }
+
+    public double getTotalCost() {
+        return this.CoutRealise;
     }
 
 }
