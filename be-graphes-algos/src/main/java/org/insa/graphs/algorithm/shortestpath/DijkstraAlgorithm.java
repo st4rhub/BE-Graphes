@@ -15,6 +15,8 @@ import org.insa.graphs.model.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+    public Graph graph;
+
     public Label newLabel(Node node, Boolean bool, double value, Arc father) {
         return new Label(node, bool, value, father);
     }
@@ -37,7 +39,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Mode mode = data.getMode();
         ShortestPathSolution solution = null;
         // Initialisation
-        Graph graph = data.getGraph();
+        graph = data.getGraph();
         Label[] labels = new Label[graph.size()];
         for (int id = 0; id < graph.size(); id++) {
             Node node_i = graph.get(id);
